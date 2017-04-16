@@ -19,7 +19,7 @@ class HabrhabrPes extends \Pes\Core\Pes {
     
     public function __construct(){
         
-        parent::__construct("https://habrahabr.ru/");
+        parent::__construct("http://korrespondent.net/");
         
     }
             

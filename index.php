@@ -13,3 +13,5 @@ require 'config' . DS . 'bootstrap.php';
 
 
 $habrhabr = new Pes\Src\HabrhabrPes();
+
+$habrhabr->find(".time-articles")->mHtml();
