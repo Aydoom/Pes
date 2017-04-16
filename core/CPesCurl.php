@@ -3,6 +3,9 @@
  * Работаем с Curl библиотекой
  * делаються запросы к страницами и передаче файлов
  */
+
+namespace Pes;
+
 class CPesCurl{
 
 	static public $is_post = false;

@@ -3,6 +3,7 @@
 /**
  * Класс - хранилище комментариев
 */
+namespace Pes;
 
 class CPesComment{
 

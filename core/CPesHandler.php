@@ -3,6 +3,9 @@
  * Основной класс библиотеки, производит распарсивание страницы
  * и создает объект для дальнейшей обработки
  */
+
+namespace Pes;
+
 class CPesHandler{
 
 	static public $typeCode = "html";

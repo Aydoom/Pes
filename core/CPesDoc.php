@@ -2,6 +2,9 @@
 /**
  * Хранилище данных
  */
+
+namespace Pes;
+
 class CPesDoc{
 
 	private $dom;

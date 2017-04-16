@@ -52,7 +52,7 @@ spl_autoload_register(function ($class) {
 	}     
 });
 
-
+namespace Pes;
 
 class Pes extends CPesBasic
 {

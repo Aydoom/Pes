@@ -2,6 +2,9 @@
 /**
  * Вспомагательный класс для изменения формата и/или кодировки данных
  */
+
+namespace Pes;
+
 class CPesFormat{
 
 	static public $encodes = array('ASCII','UTF-8','cp1251'); // доступные кодировки

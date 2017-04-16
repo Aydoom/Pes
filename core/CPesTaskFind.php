@@ -6,6 +6,9 @@
  * отформатированном документе.
  * 
 */
+
+namespace Pes;
+
 class CPesTaskFind
 {
 	public static $selectors = array();
