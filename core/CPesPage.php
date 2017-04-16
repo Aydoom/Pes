@@ -1,9 +1,9 @@
-﻿<?php
+<?php
 /**
  * Класс для манипулирования объектом созданным при распарсивании страницы
  */
 
-namespace Pes;
+namespace Pes\Core;
 
 class CPesPage extends CPesDoc{
 

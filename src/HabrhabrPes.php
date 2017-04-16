@@ -11,7 +11,10 @@
  *
  * @author Aydoom
  */
-class HabrhabrPes extends Pes {
+
+namespace Pes\Src;
+
+class HabrhabrPes extends \Pes\Core\Pes {
     //put your code here
     
     public function __construct(){

@@ -4,7 +4,7 @@
  * и создает объект для дальнейшей обработки
  */
 
-namespace Pes;
+namespace Pes\Core;
 
 class CPesHandler{
 

@@ -4,7 +4,7 @@
  * Следит за установкой паузы при повторных запросах к одному и тому же домену
  */
 
-namespace Pes;
+namespace Pes\Core;
 
 class CPesControl{
 

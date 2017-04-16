@@ -12,4 +12,4 @@ if (!defined("DS")) {
 require 'config' . DS . 'bootstrap.php';
 
 
-$habrhabr = new HabrhabrPes();
+$habrhabr = new Pes\Src\HabrhabrPes();

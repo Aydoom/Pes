@@ -1,6 +1,6 @@
 <?php
 
-namespace Pes;
+namespace Pes\Core;
 
 class CPesMsg{
 

@@ -3,7 +3,7 @@
 /**
  * Класс - хранилище комментариев
 */
-namespace Pes;
+namespace Pes\Core;
 
 class CPesComment{
 

@@ -4,7 +4,7 @@
  * делаються запросы к страницами и передаче файлов
  */
 
-namespace Pes;
+namespace Pes\Core;
 
 class CPesCurl{
 

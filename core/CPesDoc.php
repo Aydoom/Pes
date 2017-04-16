@@ -1,9 +1,9 @@
-﻿<?php
+<?php
 /**
  * Хранилище данных
  */
 
-namespace Pes;
+namespace Pes\Core;
 
 class CPesDoc{
 

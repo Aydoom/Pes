@@ -10,4 +10,5 @@ if (!defined("DS")) {
 
 define("PESDIR", __DIR__ . DS . ".." . DS);
 
-require_once PESDIR . "config" . DS . "autoloader.php";
+require_once PESDIR . "config" . DS . "PesClassAutoloader.php";
+$autoloader = new Pes\Config\PesClassAutoloader();

@@ -3,7 +3,7 @@
  * Вспомагательный класс для изменения формата и/или кодировки данных
  */
 
-namespace Pes;
+namespace Pes\Core;
 
 class CPesFormat{
 

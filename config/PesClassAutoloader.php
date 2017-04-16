@@ -5,6 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+namespace Pes\Config;
 
 class PesClassAutoloader
 {
@@ -21,22 +22,18 @@ class PesClassAutoloader
         
         $path = explode("\\", $className);
         
-        if ($path[0] === "Pes") {
+        $root = array_shift($path);
+        $fileName = array_pop($path) . ".php";
+        
+        if ($root === "Pes") {
             
-            $fileNames = [
-                PESDIR . "core" . DS . $path[1] . ".php",
-                PESDIR . "src" . DS . $path[1] . ".php",
-                PESDIR . "test" . DS . $path[1] . ".php",
-            ];
-            
-            foreach ($fileNames as $file) {
+            $path = array_map('strtolower', $path);
+            $fileUrl = PESDIR . implode(DS, $path) . DS . $fileName;
                 
-                if (file_exists($file)) {
-                    
-                    include_once $file;
-                    
-                }
-                
+            if (file_exists($fileUrl)) {
+
+                include_once $fileUrl;
+
             }
             
         }
@@ -45,4 +42,3 @@ class PesClassAutoloader
             
 }
 
-$autoloader = new PesClassAutoloader();

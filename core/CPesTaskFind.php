@@ -7,7 +7,7 @@
  * 
 */
 
-namespace Pes;
+namespace Pes\Core;
 
 class CPesTaskFind
 {

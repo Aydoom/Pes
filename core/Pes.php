@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Класс Pes
  * основной класс для работы с библиотекой, содержит функции обработки 
@@ -42,7 +42,7 @@
  *
 */
 
-namespace Pes;
+namespace Pes\Core;
 
 class Pes extends CPesBasic
 {
