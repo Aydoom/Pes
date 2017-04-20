@@ -47,64 +47,61 @@ namespace Pes\Core;
 class Pes extends CPesBasic
 {
 
-	// Константа добавления тегов
-	const TagsAdd = "add";
-	const TagsNew = "new";
+    // Константа добавления тегов
+    const TagsAdd = "add";
+    const TagsNew = "new";
 
-	/**
-	 * Переменная для хранения объекта парсируемой страницы
-	 * @var type object
-	 */
-	public $page;
-    
-	/**
-	 * Флаг указывающий на необходимость остановки скрипта после выполнения
-	 * функций обратной связи (начинающихся на m...)
-	 * @var type boolean
-	 */
-	public $stop_after_m = true;
+    /**
+     * Переменная для хранения объекта парсируемой страницы
+     * @var type object
+     */
+    public $page;
+
+    /**
+     * Флаг указывающий на необходимость остановки скрипта после выполнения
+     * функций обратной связи (начинающихся на m...)
+     * @var type boolean
+     */
+    public $stop_after_m = true;
+
+    /*
+     * Конструктор Pes
+     * @param type $url - адресс страницы которую будем парсить
+     * @param type $encode - кодировка страницы
+     * @param type $redirect - разрешение на перезагрузку странци которую парсим,
+     * при автоматическом перенаправлении на другую страницу.
+     */
+    public function __construct($url = false, $encode = null, $redirect = true) {
+        if ($url) {
+            $url_path = explode("/", $url);
+            if (empty(end($url_path))) {
+                $url.= "index.php";
+            }
+
+            $this->load($url, $encode, $redirect);
+        }
+    }
+
+    public function __toString() {
+        return $this->html();
+    }
 	
-	/*
-	 * Конструктор Pes
-	 * @param type $url - адресс страницы которую будем парсить
-	 * @param type $encode - кодировка страницы
-	 * @param type $redirect - разрешение на перезагрузку странци которую парсим,
-	 * при автоматическом перенаправлении на другую страницу.
-	 */
-    public function __construct($url = false, $encode = null, $redirect = true)
-	{
-		if ($url) {
-			
-			$url_path = explode("/", $url);
-			if (empty(end($url_path))) {
-				$url.= "index.php";
-			}
-
-			$this->load($url, $encode, $redirect);
-		}
-	}
-
-	public function __toString()
-	{
-		return $this->html();
-	}
-	
-	/*
-	 * Добавление тегов в начало или конец кода
-	 * @place - start (вначале), end - (вконце), default - (в начале и в конце)
-	*/
-	public function add($tag, $place = false)
-	{
-	    if ($place=='start') {
-	        $html = "<".$tag.">".$this->html();
+    /*
+     * Добавление тегов в начало или конец кода
+     * @place - start (вначале), end - (вконце), default - (в начале и в конце)
+    */
+    public function add($tag, $place = false) {
+        if ($place == 'start') {
+            $html = "<" . $tag . ">" . $this->html();
         } elseif ($place == 'end') {
-	        $html = $this->html() . "</" . $tag . ">";
+            $html = $this->html() . "</" . $tag . ">";
         } else {
             $html = "<" . $tag . ">" . $this->html() . "</" . $tag . ">";
-		}
+        }
+        
         $this->html($html);
-		return $this;
-	}
+        return $this;
+    }
 
 	/*
 	 *  Функция возвращения и замены значение атрибута первого элемента
@@ -403,57 +400,56 @@ class Pes extends CPesBasic
         return $href;
     }
 	
-	/*
-	 * Загрузка кода для парсинга
-	 * Загрузка возможна с удаленного сервера, из файла с
-	 * локального сревера или напрямую при передаче кода
-	 * 
-	 * @param type $html - может быть как html - код, так и url - адрес
-	 * @param type $encode - при необходимости можно заранее определить кодировку
-	 * @param type $redirect - разрешение на перезагрузку странци которую парсим,
-	 * при автоматическом перенаправлении на другую страницу.
-	 */
-    public function load($html,$encode=false,$redirect=true){
-		// Убираються лишние пробелы
-		$html = trim($html);
-		// Проверяется содержимое $html на url или html
-		// Если URL абсолютный
-		$url = parse_url($html);
-		if(isset($url['scheme'])){
-			
-			// Определяется расширение файла
-			$path_array = explode(".",$url['path']);
-			$url['type_file'] = end($path_array);
-			$url['url'] = $html;
-			// Проверяется на повторный запрос к хосту
-			CPesControl::sleep($url);
-			// Считываем страницу
-			$code = CPesCurl::load($url['url'],$encode,$redirect);
-		}
-		// Если Url относительный
-		else{
-			$real_url = explode("<",trim($html));
-			if($real_url[0]==$html){
-				$url['type_file'] = 'file';
-				$code['body'] = file_get_contents($html);
-			}
-			// Остается Html-код
-			else{
-				$url['type_file'] = 'html';
-				$code['body'] = $html;
-			}
-		}
-		// Меняем кодировку
-		$html = CPesFormat::inUtf8($code);
-		// Преобразум страницу в массив
-		$html = CPesHandler::convert($html);
-		// Выстраиваем ДОМ
-		$dom = CPesHandler::buildDom($html);
-		// Создаем объект страницы
-		$this->page = new CPesPage();
-		$this->page->setDom($dom);
-		$this->page->setUrl($url);
-	}
+    /*
+     * Загрузка кода для парсинга
+     * Загрузка возможна с удаленного сервера, из файла с
+     * локального сревера или напрямую при передаче кода
+     * 
+     * @param type $html - может быть как html - код, так и url - адрес
+     * @param type $encode - при необходимости можно заранее определить кодировку
+     * @param type $redirect - разрешение на перезагрузку странци которую парсим,
+     * при автоматическом перенаправлении на другую страницу.
+     */
+    public function load($html, $encode = false, $redirect = true) {
+        // Убираються лишние пробелы
+        $html = trim($html);
+        // Проверяется содержимое $html на url или html
+        // Если URL абсолютный
+        $url = parse_url($html);
+        if(isset($url['scheme'])){
+            // Определяется расширение файла
+            $path_array = explode(".", $url['path']);
+            $url['type_file'] = end($path_array);
+            $url['url'] = $html;
+            // Проверяется на повторный запрос к хосту
+            CPesControl::sleep($url);
+            // Считываем страницу
+            $code = CPesCurl::load($url['url'],$encode,$redirect);
+        }
+        // Если Url относительный
+        else {
+            $real_url = explode("<", trim($html));
+            if($real_url[0] == $html){
+                $url['type_file'] = 'file';
+                $code['body'] = file_get_contents($html);
+            }
+            // Остается Html-код
+            else{
+                $url['type_file'] = 'html';
+                $code['body'] = $html;
+            }
+        }
+        // Меняем кодировку
+        $html = CPesFormat::inUtf8($code);
+        // Преобразум страницу в массив
+        $html = CPesHandler::convert($html);
+        // Выстраиваем ДОМ
+        $dom = CPesHandler::buildDom($html);
+        // Создаем объект страницы
+        $this->page = new CPesPage();
+        $this->page->setDom($dom);
+        $this->page->setUrl($url);
+    }
 	
 	// Вывод на экран doc массива
     public function mDom()
