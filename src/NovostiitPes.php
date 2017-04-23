@@ -14,12 +14,22 @@
 
 namespace Pes\Src;
 
-class HabrhabrPes extends \Pes\Core\Pes {
+class NovostiitPes extends \Pes\Core\Pes 
+{
     //put your code here
     
-    public function __construct(){
+    public function __construct()
+    {
         
-        parent::__construct("http://korrespondent.net/");
+        parent::__construct("http://www.novostiit.net/");
+        
+    }
+    
+    
+    public function loadNews()
+    {
+    
+        $this->words('Все новости')->mHtml();
         
     }
             

@@ -11,7 +11,4 @@ if (!defined("DS")) {
 
 require 'config' . DS . 'bootstrap.php';
 
-
-$habrhabr = new Pes\Src\HabrhabrPes();
-
-$habrhabr->find(".time-articles")->mHtml();
+require 'examples' . DS . 'novostiit.php';

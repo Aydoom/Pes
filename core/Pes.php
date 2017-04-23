@@ -587,7 +587,7 @@ class Pes extends CPesBasic
 		}
 		CPesHandler::$tagsDefault = $tagsDefault;
 		$html = $this->page->html();
-		return $this->html($html);;
+		return $this->html($html);
 	}
 	
 	// Возвращаем текст
@@ -595,40 +595,43 @@ class Pes extends CPesBasic
 		return ($html) ? CPesHandler::getText($html) : $this->page->text();
 	}
 
-	// Функция поиска тега по слову в тексте (слова через запятую) изменяет дерево
-	public function words($words,$encode=null){
-		$word = explode(",",$words.",");
-		$cI=count($word)-1;
-		unset($word[$cI]);
-		foreach($word as $key => $val){
-			$word[$key] = trim($word[$key]);
-			$encode=($encode==null) ? mb_detect_encoding($word[$key], "auto") : $encode;
-			if($encode!="UTF-8"){
-				$word[$key] = mb_strtolower(CPesFormat::inUtf8($word[$key], $encode));
-			}
-		}
-		$dom = $this->page->getDom();
-		$cD = count($dom);
-		for($i=0;$i<$cD;$i++){
-			$str=strip_tags((str_replace("~", "<", $dom[$i]['old'])));
-			if(!empty($str)){
-				$str = mb_strtolower(CPesFormat::inUtf8($str,mb_detect_encoding($str, "auto")),"UTF-8");
-				foreach($word as $phrase){
-					if(substr_count($str,$phrase)>0){
-						$start = $dom[$i]['patter'];
-						$end = $dom[$start]['end'];
-						for($u=$start;$u<=$end;$u++){
-							$result[] = $dom[$u];
-						}
-						$i=$end;
-						break;
-					}
-				}
-			}
-		}
-		$this->page->setDom(CPesHandler::patters($result));
-		return $this;
-	}
+    // Функция поиска тега по слову в тексте (слова через запятую) изменяет дерево
+    public function words($words, $encode = null){
+        $word = explode(",", $words . ",");
+        $cI = count($word) - 1;
+        unset($word[$cI]);
+        
+        foreach($word as $key => $val){
+            $word[$key] = trim($word[$key]);
+            $encode = ($encode == null) ? 
+                    mb_detect_encoding($word[$key], "auto") : $encode;
+            if($encode != "UTF-8"){
+                $word[$key] = mb_strtolower(CPesFormat::inUtf8($word[$key], $encode));
+            }
+        }
+        $dom = $this->page->getDom();
+        $cD = count($dom);
+        
+        for($i = 0; $i < $cD; $i++) {
+            $str = strip_tags((str_replace("~", "<", $dom[$i]['old'])));
+            if(!empty($str)) {
+                $str = mb_strtolower(CPesFormat::inUtf8($str, mb_detect_encoding($str, "auto")),"UTF-8");
+                foreach($word as $phrase) {
+                    if(substr_count($str,$phrase) > 0){
+                        $start = $dom[$i]['patter'];
+                        $end = $dom[$start]['end'];
+                        for($u = $start; $u <= $end; $u++){
+                            $result[] = $dom[$u];
+                        }
+                        $i=$end;
+                        break;
+                    }
+                }
+            }
+        }
+        $this->page->setDom(CPesHandler::patters($result));
+        return $this;
+    }
 
 	/**
 	* Функция оборачивания
