@@ -22,6 +22,8 @@ class NovostiitPes extends \Pes\Core\Pes
     {
         
         parent::__construct("http://www.novostiit.net/");
+		
+		pr($this->code);
         
     }
     
