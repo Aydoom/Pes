@@ -411,23 +411,40 @@ class Pes extends CPesBasic
      * при автоматическом перенаправлении на другую страницу.
      */
     public function load($html, $encode = false, $redirect = true) {
-        
-		$load = new CPesLoad($html, $encode, $redirect);
-
+        // Убираються лишние пробелы
+        $html = trim($html);
+        // Проверяется содержимое $html на url или html
+        // Если URL абсолютный
+        $url = parse_url($html);
+        if(isset($url['scheme'])){
+            // Определяется расширение файла
+            $path_array = explode(".", $url['path']);
+            $url['type_file'] = end($path_array);
+            $url['url'] = $html;
+            // Проверяется на повторный запрос к хосту
+            CPesControl::sleep($url);
+            // Считываем страницу
+            $code = CPesCurl::load($url['url'],$encode,$redirect);
+        }
+        // Если Url относительный
+        else {
+            $real_url = explode("<", trim($html));
+            if($real_url[0] == $html){
+                $url['type_file'] = 'file';
+                $code['body'] = file_get_contents($html);
+            }
+            // Остается Html-код
+            else{
+                $url['type_file'] = 'html';
+                $code['body'] = $html;
+            }
+        }
         // Меняем кодировку
-        $html = CPesFormat::inUtf8($load->getHtml());
-		
-		/*
+        $html = CPesFormat::inUtf8($code);
         // Преобразум страницу в массив
         $html = CPesHandler::convert($html);
-		
         // Выстраиваем ДОМ
         $dom = CPesHandler::buildDom($html);
-		*/
-		
-		// Преобразуем страницу в объект
-		$dom = new CPesTransform($html);
-		
         // Создаем объект страницы
         $this->page = new CPesPage();
         $this->page->setDom($dom);
