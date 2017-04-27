@@ -428,6 +428,8 @@ class Pes extends CPesBasic
 		// Преобразуем страницу в объект
 		$dom = new CPesTransform($html);
 		
+		pr($dom);
+		
         // Создаем объект страницы
         $this->page = new CPesPage();
         $this->page->setDom($dom);

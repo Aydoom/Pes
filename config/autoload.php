@@ -11,5 +11,3 @@ require_once PESDIR . "core" . DS . "CAutoloader.php";
 $autoload = new Pes\Core\CAutoloader();
 
 spl_autoload_register([$autoload, "load"]);
-
-

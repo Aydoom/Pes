@@ -9,7 +9,8 @@ namespace Pes\Core;
 class CPesTransform
 {
 	
-	public $tags = [];
+	public $rows = [];
+	
 	
 	
 	public function __construct($html)
@@ -29,19 +30,21 @@ class CPesTransform
 	}
 	
 	
+	
 	public function clear ($html)
 	{
 		
 		// Убираем двойные пробелы и тильды из кода 
-		return CPesFormat::trimTwo(str_replace("~", "-", $html))
+		return CPesFormat::trimTwo(str_replace("~", "-", $html));
 		
 	}
+	
 	
 	
 	public function htmlToArray($html)
 	{
 		
-		$html = str_replace("<", "~<", $html);
+		$html = str_replace(["<", ">"], ["~<", ">~"], $html);
 		
 		$array = explode("~", $html);
 		
@@ -52,37 +55,41 @@ class CPesTransform
 	}
 	
 	
+	
 	public function parse ($html)
 	{
-		
-		$id = 1;
-		$parentID = 0;
-		
-		while($html) {
-			
-			$tag = new CPesTag($html, $id, $parentID);
 
-			if ($tag->hasChildren()) {
-			
-				$parentID = $id;
+		$parentlevel = 0;
+		$parentID[0] = 0;
+		
+		foreach($html as $id => $row) {
+		
+			if (substr_count($row, "</") > 0) {
 				
+				$pId = $parentID[$parentlevel];
+
+				$this->rows[$pId]->setEnd($id);
+				
+				$parentlevel--;
+				
+				if ($parentlevel < 0) {
+					
+					$parentlevel = 0;
+					
+				}
+				
+			
 			} else {
 			
-				$parentID = 0;
+				$this->rows[$id] = new CPesTag($row, $id);
+				
+				$parentlevel++;
+				
+				$parentID[$parentlevel] = $id;
 			
 			}
-			
-			$html = $tag->getRestHtml();
-			
-			$tag->deleteRestHtml();
-			
-			$this->tags[] = $tag;
-			
-			$id++;
-			
+		
 		}
 		
 	}
 }
-	
-
