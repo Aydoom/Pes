@@ -14,6 +14,7 @@
 
 namespace Pes\Src;
 
+
 class NovostiitPes extends \Pes\Core\Pes 
 {
     //put your code here
