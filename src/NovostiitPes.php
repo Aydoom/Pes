@@ -14,7 +14,6 @@
 
 namespace Pes\Src;
 
-
 class NovostiitPes extends \Pes\Core\Pes 
 {
     //put your code here
@@ -24,8 +23,8 @@ class NovostiitPes extends \Pes\Core\Pes
         
         parent::__construct("http://www.novostiit.net/");
 		
-		pr($this->code);
-        
+		pr($this->html());		
+       
     }
     
     

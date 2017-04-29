@@ -11,7 +11,7 @@ class CPesTag
 	public $id;
 	
 	public $name;
-	public $type;
+	public $type = "open";
 	
 	public $attrs = [];
 	
@@ -25,39 +25,120 @@ class CPesTag
 		
 		$this->id = $id;
 		
-		$this->html = $html;
+		$this->html = str_replace(["<", ">"], ["&#60;","&#62;"], $html);
 		
 		$this->setTag($html);
+		
+		$this->setType();
 		
 	}
 			
 	
 	
-	public function addAttr($el)
+	public function addAttr($name, $val)
 	{
 		
-		$parts = explode("=", $el);
-		
-		$typeSel = $parts[0];
-		
-		$this->attrs[$typeSel] = explode(" ", $parts[1]);
+		$this->attrs[$name] = $val;
 		
 	}
-
-
+	
+	
+	
+	public function getEnd()
+	{
+		
+		if (empty($this->position['end'])) {
+		
+			return $this->id;
+		
+		} else {
+		
+			return $this->position['end'];
+		
+		}
+		
+	}
+	
+	
+	
+	public function getHtml()
+	{
+		
+		return str_replace(["&#60;","&#62;"], ["<", ">"], $this->html);
+	
+	}
+		
+	
+	
+	public function isType($types)
+	{
+		
+		if (!is_array($types)) {
+			
+			$types = array($types);
+			
+		}
+		
+		$output = false;
+		
+		foreach($types as $type) {
+		
+			if ($this->type == $type) {
+			
+				$output = true;
+				break;
+			
+			}
+		
+		}
+		
+		
+		return $output;
+		
+	}
+	
 
 	public function setTag($html)
 	{
 		
-		$html = str_replace(["<", ">", " =", " = ", "= ", '"'], ["", "", "=", "=", "=", "'"], $html);
+		$html = str_replace(["<", ">", " =", " = ", "= ", '"'], ["", "", "=", "=", "=", '"'], $html);
 		
 		$els = explode(" ", $html);
 		
-		$this->name = array_shift($els);
+		$this->name = strtolower(array_shift($els));
 		
-		foreach($els as $el) {
+		preg_match_all('/\s([a-zA-Z]*)="([^"]*)/', $html, $attrs);
 		
-			$this->addAttr($el);	
+		if (!empty($attrs)) {
+			
+			foreach($attrs[1] as $i => $attr) {
+			
+				$this->addAttr($attr, $attrs[2][$i]);
+			
+			}
+			
+		}
+		
+		
+	}
+	
+	
+	
+	public function setType()
+	{
+		
+		$types = [
+			'close' => ["meta", "link", "img", "br"],
+			'mixed' => ["li", "p"]
+		];
+		
+		foreach ($types as $type => $tags) {
+			
+			if (in_array($this->name, $tags)) {
+			
+				$this->type = $type;
+			
+			} 	
 		
 		}
 		

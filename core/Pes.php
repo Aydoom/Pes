@@ -72,35 +72,56 @@ class Pes extends CPesBasic
      * при автоматическом перенаправлении на другую страницу.
      */
     public function __construct($url = false, $encode = null, $redirect = true) {
-        if ($url) {
+        
+		if ($url) {
+			
             $url_path = explode("/", $url);
+			
             if (empty(end($url_path))) {
+				
                 $url.= "index.php";
+				
             }
 
             $this->load($url, $encode, $redirect);
         }
     }
 
-    public function __toString() {
+	
+	
+	// Function __toString()
+    public function __toString()
+	{
+
         return $this->html();
+
     }
 	
     /*
      * Добавление тегов в начало или конец кода
-     * @place - start (вначале), end - (вконце), default - (в начале и в конце)
+     * @place - start (вначале открывающий), end - (вконце закрывающий), 
+	 * default - (оборачиваем html  в тег)
     */
     public function add($tag, $place = false) {
+		
         if ($place == 'start') {
-            $html = "<" . $tag . ">" . $this->html();
+
+			$html = "<" . $tag . ">" . $this->html();
+			
         } elseif ($place == 'end') {
+			
             $html = $this->html() . "</" . $tag . ">";
+			
         } else {
+			
             $html = "<" . $tag . ">" . $this->html() . "</" . $tag . ">";
+			
         }
         
         $this->html($html);
+		
         return $this;
+		
     }
 
 	/*
@@ -325,20 +346,36 @@ class Pes extends CPesBasic
 		return CPesTaskFind::create($sel)->first($this->page,$start);
 	}
 
+	
 	// Функция выведения html - кода
-    public function html($html=false){
-		if($html){
+    public function html($html = false)
+	{
+		if($html) {
+			
+			/*
 			// Преобразум страницу в массив
 			$html = CPesHandler::convert($html);
+			
 			// Выстраиваем ДОМ
 			$dom = CPesHandler::buildDom($html);
+			*/
+			
+			// Преобразуем страницу в объект
+			$dom = new CPesTransform($html);
+			
 			$this->page->setDom($dom);
+			
 			return $this;
-		}
-		else
+			
+		} else {
+			
 			return $this->page->html();
+			
+		}
 	}
 
+	
+	
 	// Функция перевода всего текста(old) в тег teg
 	public function intoTag($tag = "tag"){
 		$m = true;
@@ -419,21 +456,27 @@ class Pes extends CPesBasic
 		
 		/*
         // Преобразум страницу в массив
-        $html = CPesHandler::convert($html);
+        $html_old = CPesHandler::convert($html);
 		
         // Выстраиваем ДОМ
-        $dom = CPesHandler::buildDom($html);
-		*/
+        $dom = CPesHandler::buildDom($html_old);
 		
+		//pr($dom);
+		*/
+
 		// Преобразуем страницу в объект
 		$dom = new CPesTransform($html);
 		
-		pr($dom);
+		//pr($dom);
+		
 		
         // Создаем объект страницы
-        $this->page = new CPesPage();
-        $this->page->setDom($dom);
+        $this->page = new CPesPage($url, $dom);
+        /*
+		$this->page->setDom($dom);
         $this->page->setUrl($url);
+		*/
+		
     }
 	
 	// Вывод на экран doc массива

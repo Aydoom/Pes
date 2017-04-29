@@ -7,21 +7,30 @@ namespace Pes\Core;
 
 class CPesPage extends CPesDoc{
 
+
+
 	/**
 	 * Возвращает html - код
 	 * @param type $separat
 	 * @return type string
 	 */
-	function html($separat = ""){
-		$ok="";
-		$dom = $this->getDom();
-		$cI=count($dom);
-		for($i=0;$i<$cI;$i++)
-			$code[] = CPesHandler::inHtml($dom[$i]['old']);
-		if(count($code)>0)
-			$ok = implode($separat,$code);
-		return CPesComment::add($ok);	
+	public function html($separat = ""){
+		
+		$output = "";
+		
+		$output = $this->getDom()->getHtmlArray();
+		
+		if (count($output) > 0) {
+			
+			$output = implode($separat, $output);
+		
+		}
+		
+		return CPesComment::add($output);	
 	}
+	
+	
+	
 	/**
 	 * Возвращает содержимое (контент) 
 	 * @return type string
