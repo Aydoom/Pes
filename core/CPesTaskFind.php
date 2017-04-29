@@ -47,19 +47,18 @@ class CPesTaskFind
 	/**
      * Создаем экземпляр класса, с активным селектором
      */
-	static function create($sel)
-    {
-		$task = new self();
+    static function create($sel) {
+        $task = new self();
 
-		// Определяем наличие селектора
-		if(isset(self::$selectors[$sel])) {
-			$task->activeSel = self::$selectors[$sel];
-		} else {
-			$task->activeSel = self::$selectors[$sel] = self::parsSelector($sel);
-		}
+        // Определяем наличие селектора
+        if(isset(self::$selectors[$sel])) {
+            $task->activeSel = self::$selectors[$sel];
+        } else {
+            $task->activeSel = self::$selectors[$sel] = self::parsSelector($sel);
+        }
 
-		return $task;
-	}
+        return $task;
+    }
 
 	/**
      * Вспомогательная функция для реализации совпадения
