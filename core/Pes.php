@@ -73,7 +73,7 @@ class Pes extends CPesBasic
      */
     public function __construct($url = false, $encode = null, $redirect = true) {
         
-		if ($url) {
+        if ($url) {
 			
             $url_path = explode("/", $url);
 			
@@ -90,8 +90,7 @@ class Pes extends CPesBasic
 	
 	
 	// Function __toString()
-    public function __toString()
-	{
+    public function __toString() {
 
         return $this->html();
 
@@ -106,7 +105,7 @@ class Pes extends CPesBasic
 		
         if ($place == 'start') {
 
-			$html = "<" . $tag . ">" . $this->html();
+            $html = "<" . $tag . ">" . $this->html();
 			
         } elseif ($place == 'end') {
 			
@@ -124,74 +123,45 @@ class Pes extends CPesBasic
 		
     }
 
-	/*
-	 *  Функция возвращения и замены значение атрибута первого элемента
-	 * @attr - атрибут, значение которго нужно вернуть
-	 * @change - значение на которое необходимо заменить найденные атрибуты
-	 */
-	public function attr($attr, $change = false)
-	{
-		$doc = $this->page->getDom();
-		if ((isset($doc[0]['attr'])) && (!$change)) {
-			foreach ($doc[0]['attr'] as $key => $val) {
-				if (($attr === $key)) {
-					return (is_array($val)) ? implode(" ", $val) : $val;
-				}
-			}
-		} elseif ($change) {
-			foreach ($doc as $k => $v) {
-				if (isset($doc[$k]['attr'])) {
-					foreach ($doc[$k]['attr'] as $key => $val) {
-						if (is_array($val)) {
-							$ok = false;
-							foreach ($val as $class) {
-								if ($class == $attr) {
-									$ok = true;
-									break;
-								}
-							}
-						}
-						if (($attr === $key) || ($ok)) {
-							$inAttr = (is_array($doc[$k]['attr'][$key])) ?
-										implode(" ",$doc[$k]['attr'][$key]) :
-										$doc[$k]['attr'][$key];
-							$pattern = "/("
-										. $key
-										. ")(.)*(=)(\')*(\")*(\s)*("
-										. $inAttr
-										. ")/i";
-							$replacement = "$1$2$3$4$5\${6}" . $change . "$8";
+    /*
+     *  Функция возвращения и замены значение атрибута первого элемента
+     * @attr - атрибут, значение которго нужно вернуть
+     * @change - значение на которое необходимо заменить найденные атрибуты
+     */
+    public function attr($attr, $change = false) {
+        
+        $doc = $this->page->getDom();
+        
+        if (!$change) {
+            
+            return $doc->getRow(1)->getAttr($attr);
+            
+        } else {
+            
+            $doc->getRow(1)->setAttr($attr, $change);
+            
+            return $this;
+            
+        }
+        
+    }
 
-							$doc[$k]['old'] = preg_replace( $pattern,
-															$replacement,
-															$doc[$k]['old']
-							);
-							$doc[$k]['attr'][$key] = ($attr == 'class') ?
-														explode(" ", $change) : 
-														$change;
-						}
-					}
-				}
-			}
-			$this->page->setDom($doc);
-			return $this;
-		} else {
-			return $this;
-		}
-	}
-
-	/*
-	 *  Функция удаления тега со всем содержимым из кода
-	 * @sel - селлектор
-	 * @type - тип удаления, all - во всем документе, in - внутри отцовского
-	 */
-	public function delete($sel, $type = "all")
-	{
-		$start = ($type == "all") ? 0 : 1;
-		$ids = CPesTaskFind::create($sel)->id($this->page, $start);
-		$this->page->delete($ids);
-		return $this;
-	}
+    /*
+     *  Функция удаления тега со всем содержимым из кода
+     * @sel - селлектор
+     * @type - тип удаления, all - во всем документе, in - внутри отцовского
+     */
+    public function delete($sel, $type = "all") {
+        
+        $start = ($type == "all") ? 0 : 1;
+        
+        $ids = CPesTaskFind::create($sel)->id($this->page, $start);
+        
+        $this->page->delete($ids);
+        
+        return $this;
+        
+    }
 
 	/*
 	 * Функция выведения массивом данных по тегам начиная с самого первого
