@@ -30,6 +30,19 @@ class CPesTransform
 	}
 	
 	
+	
+	// function getFirstRow()
+	public function getFirstRow()
+	{
+		
+		$rows = $this->rows;
+		
+		return array_shift($rows);
+		
+	}
+	
+	
+	
 	// function getHtmlArray()
 	public function getHtmlArray()
 	{
@@ -54,16 +67,9 @@ class CPesTransform
 		
 	}
 	
-        
-        
-        // function getRowById()
-        public function getRow($i) {
-            
-            return $this->rows[$i];
-            
-        }
 	
-	public function clear ($html) {
+	public function clear ($html)
+	{
 		
 		// Убираем двойные пробелы и тильды из кода 
 		$html = CPesFormat::trimTwo(str_replace("~", "-", $html));

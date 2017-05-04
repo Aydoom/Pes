@@ -9,7 +9,11 @@ function pr($array = "Test Run", $end = true)
         print_r($array);
     echo "</pre>";
 	
-	 var_dump(debug_backtrace());
+    echo "<br/><br/><br/><br/>";
+	echo "<p> ------------ DEBUG -------------- </p>";
+    echo "<pre>";
+		print_r(debug_backtrace());
+    echo "</pre>";
     
     if ($end) {
         exit();

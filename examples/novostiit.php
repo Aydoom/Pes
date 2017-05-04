@@ -7,4 +7,7 @@
  */
 
 $novostiIt = new Pes\Src\NovostiitPes();
+
+$novostiIt->attr("class", true);
+
 $novostiIt->loadNews();

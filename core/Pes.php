@@ -73,7 +73,7 @@ class Pes extends CPesBasic
      */
     public function __construct($url = false, $encode = null, $redirect = true) {
         
-        if ($url) {
+		if ($url) {
 			
             $url_path = explode("/", $url);
 			
@@ -90,7 +90,8 @@ class Pes extends CPesBasic
 	
 	
 	// Function __toString()
-    public function __toString() {
+    public function __toString()
+	{
 
         return $this->html();
 
@@ -105,7 +106,7 @@ class Pes extends CPesBasic
 		
         if ($place == 'start') {
 
-            $html = "<" . $tag . ">" . $this->html();
+			$html = "<" . $tag . ">" . $this->html();
 			
         } elseif ($place == 'end') {
 			
@@ -123,46 +124,58 @@ class Pes extends CPesBasic
 		
     }
 
-    /*
-     *  Функция возвращения и замены значение атрибута первого элемента
-     * @attr - атрибут, значение которго нужно вернуть
-     * @change - значение на которое необходимо заменить найденные атрибуты
-     */
-    public function attr($attr, $change = false) {
-        
-        $doc = $this->page->getDom();
-        
-        if (!$change) {
-            
-            return $doc->getRow(1)->getAttr($attr);
-            
-        } else {
-            
-            $doc->getRow(1)->setAttr($attr, $change);
-            
-            return $this;
-            
-        }
-        
-    }
+	/*
+	 *  Функция возвращения и замены значение атрибута первого элемента
+	 * @attr - атрибут, значение которого нужно вернуть
+	 * @change - значение на которое необходимо заменить найденные атрибуты
+	 */
+	public function attr($attr, $change = false) {
+		
+		$doc = $this->page->getDom();
+		
+		$block = $doc->getFirstRow();
+		
+		if ($change) {
+			
+			$block->changeAttr($attr, $change);
+			
+			return $this;
+			
+		} elseif ($block->hasAttr($attr);) {
+			
+			CPesMsg::notes("атрибут $attr не найден");
+			
+			return false;
+			
+		} else {
+			
+			return $block->getAttr($attr);
+			
+		}
 
-    /*
-     *  Функция удаления тега со всем содержимым из кода
-     * @sel - селлектор
-     * @type - тип удаления, all - во всем документе, in - внутри отцовского
-     */
-    public function delete($sel, $type = "all") {
-        
-        $start = ($type == "all") ? 0 : 1;
-        
-        $ids = CPesTaskFind::create($sel)->id($this->page, $start);
-        
-        $this->page->delete($ids);
-        
-        return $this;
-        
-    }
+	}
 
+	
+	
+	/*
+	 * Функция удаления тега со всем содержимым из кода
+	 * @sel - селлектор
+	 * @type - тип удаления, all - во всем документе, in - внутри отцовского
+	 */
+	public function delete($sel, $type = "all") {
+		
+		$start = ($type == "all") ? 0 : 1;
+		
+		$ids = CPesTaskFind::create($sel)->id($this->page, $start);
+		
+		$this->page->delete($ids);
+		
+		return $this;
+		
+	}
+
+	
+	
 	/*
 	 * Функция выведения массивом данных по тегам начиная с самого первого
 	 * @function - колл бэк функция (1-ый параметр - $pes, 2-ой $html-код)
