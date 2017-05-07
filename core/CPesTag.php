@@ -93,7 +93,23 @@ class CPesTag
 	
 	public function getHtml() {
 		
-		return str_replace(["&#60;","&#62;"], ["<", ">"], $this->html);
+		$attrs = [];
+		
+		foreach($this->attrs as $attrName => $value) {
+		
+			if (is_array($value)) {
+			
+				$attrs[] = $attrName . '="' . implode(" ", $value) . '"';
+			
+			} else {
+			
+				$attrs[] = $attrName . '="' . $value . '"';
+			
+			}
+		
+		}
+		
+		return '<' . $this->name . ' ' . implode(' ', $attrs) . '>';
 	
 	}
 	

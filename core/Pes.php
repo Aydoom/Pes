@@ -137,11 +137,11 @@ class Pes extends CPesBasic
 		
 		if ($change) {
 			
-			$block->changeAttr($attr, $change);
+			$block['tag']->changeAttr($attr, $change);
 			
 			return $this;
 			
-		} elseif ($block->hasAttr($attr);) {
+		} elseif ($block['tag']->hasAttr($attr)) {
 			
 			CPesMsg::notes("атрибут $attr не найден");
 			
@@ -149,7 +149,7 @@ class Pes extends CPesBasic
 			
 		} else {
 			
-			return $block->getAttr($attr);
+			return $block['tag']->getAttr($attr);
 			
 		}
 

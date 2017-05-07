@@ -13,8 +13,7 @@ namespace Pes\Core;
  *
  * @author Aydoom
  */
-class CAutoloader
-{
+class CAutoloader {
     
     
     public function load($className){
