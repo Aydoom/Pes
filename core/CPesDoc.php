@@ -15,9 +15,9 @@ class CPesDoc{
 	public function __construct($url, CPesTransform $dom)
 	{
 		
-		$this->setDom($dom);
-		
-		$this->setUrl($url);
+            $this->setDom($dom);
+
+            $this->setUrl($url);
 		
 	}
 	

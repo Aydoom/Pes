@@ -8,38 +8,43 @@ namespace Pes\Core;
 
 class CPesTransform
 {
-	
-	public $rows = [];
-	
-	
-	
-	public function __construct($html)
-	{
-		// Remove the excess symbols
-		$html = $this->clear($html);
-		
-		// Remove the comments
-		$html = CPesComment::remove($html);
-		
-		// Создаем из html массив для удобства дальнейшей обработки
-		$html = $this->htmlToArray($html);
-		
-		// Запускаем парсер
-		$this->parse($html);
+    /**
+     *
+     * @var array rows 
+     */
+    private $rows = [];
 
-	}
-	
-	
-	
-	// function getFirstRow()
-	public function getFirstRow()
-	{
-		
-		$rows = $this->rows;
-		
-		return array_shift($rows);
-		
-	}
+    /**
+     * Constructor
+     * 
+     * @param type $html
+     */
+    public function __construct($html)
+    {
+        // Remove the excess symbols
+        $clear = $this->clear($html);
+
+        // Remove the comments
+        $outComment = CPesComment::remove($clear);
+
+        // Create array from html code
+        $array = $this->htmlToArray($outComment);
+
+        // Run parser
+        $this->parse($array);
+    }
+
+    /**
+     * GetFirstRow()
+     * 
+     * @return type
+     */
+    public function getFirstRow()
+    {
+        $rows = $this->rows;
+
+        return array_shift($rows);
+    }
 	
 	
 	
